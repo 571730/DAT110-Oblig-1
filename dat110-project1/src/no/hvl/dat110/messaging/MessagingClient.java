@@ -22,9 +22,12 @@ public class MessagingClient {
 
 		// TODO
 		// create TCP socket for client and connection
-
-		if (true) {
-			throw new RuntimeException("not yet implemented");
+		try {
+			clientSocket = new Socket(server, port);
+			connection = new Connection(clientSocket);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return connection;
