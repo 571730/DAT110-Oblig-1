@@ -1,15 +1,19 @@
 package no.hvl.dat110.rpc;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class RPCUtils {
 
 	public static byte[] marshallString(byte rpcid, String str) {
 
-		byte[] encoded;
+		byte[] encoded = new byte[str.getBytes().length + 1];
 
-		// TODO: marshall RPC identifier and string into byte array
-
+		encoded[0] = rpcid;
+		for(int i = 0; i < str.getBytes().length; i++) {
+			encoded[i + 1] = str.getBytes()[i];
+		}
 		
 
 		return encoded;
@@ -17,26 +21,19 @@ public class RPCUtils {
 
 	public static String unmarshallString(byte[] data) {
 
-		String decoded;
-
-		// TODO: unmarshall String contained in data into decoded
-
-		if (true) {
-			throw new RuntimeException("not yet implemented");
-		}
+		String decoded = new String(Arrays.copyOfRange(data, 1, data.length));
 
 		return decoded;
 	}
 
 	public static byte[] marshallVoid(byte rpcid) {
 
-		byte[] encoded;
+		byte[] encoded = new byte[1];
+		encoded[0] = rpcid;
 
 		// TODO: marshall RPC identifier in case of void type
 
-		if (true) {
-			throw new RuntimeException("not yet implemented");
-		}
+		
 
 		return encoded;
 
@@ -45,6 +42,7 @@ public class RPCUtils {
 	public static void unmarshallVoid(byte[] data) {
 
 		// TODO: unmarshall void type
+		
 	}
 
 	public static byte[] marshallBoolean(byte rpcid, boolean b) {
@@ -70,26 +68,29 @@ public class RPCUtils {
 
 	public static byte[] marshallInteger(byte rpcid, int x) {
 
-		byte[] encoded;
-
+		byte[] temp = ByteBuffer.allocate(4).putInt(x).array();
+		byte[] encoded = new byte[temp.length + 1];
+		encoded[0] = rpcid;
+		for(int i = 0; i < temp.length; i++) {
+			encoded[i + 1] = temp[i];
+		}
 		// TODO: marshall RPC identifier and string into byte array
 
-		if (true) {
-			throw new RuntimeException("not yet implemented");
-		}
+		
 
 		return encoded;
 	}
 
 	public static int unmarshallInteger(byte[] data) {
-
-		int decoded;
+		byte[] temp = new byte[data.length - 1];
+		for(int i = 1; i < data.length; i++) {
+			temp[i - 1] = data[i];
+		}
+		int decoded = ByteBuffer.wrap(temp).getInt();
 
 		// TODO: unmarshall integer contained in data
 
-		if (true) {
-			throw new RuntimeException("not yet implemented");
-		}
+		
 
 		return decoded;
 
